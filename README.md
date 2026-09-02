@@ -42,4 +42,4 @@ O banco de dados do sistema é composto por 3 tabelas principais:
 1. **Clonar o Repositório:**
    ```bash
    git clone [https://github.com/toto20zin/just_in_time_01_2026.git](https://github.com/toto20zin/just_in_time_01_2026.git)
-   cd seu-repositorio
+   
