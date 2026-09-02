@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema Just In Time - MDF</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- TELA DE LOGIN -->
+  <div id="screen-login" class="screen active">
+    <div class="card">
+      <h2>Acesso ao Sistema</h2>
+      <div id="login-error" class="alert error hidden"></div>
+      
+      <form id="form-login">
+        <div class="form-group">
+          <label for="login-email">E-mail</label>
+          <input type="email" id="login-email" placeholder="seu@email.com" required>
+        </div>
+        <div class="form-group">
+          <label for="login-senha">Senha</label>
+          <input type="password" id="login-senha" placeholder="******" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Entrar</button>
+      </form>
+
+      <div style="margin-top: 15px; text-align: center;">
+        <span>Não tem uma conta? </span>
+        <a href="#" id="link-go-register" style="color: #007bff; text-decoration: underline;">Cadastre-se aqui</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- TELA DE CADASTRO (PÚBLICA) -->
+  <div id="screen-cadastro-user" class="screen">
+    <div class="card">
+      <h2>Criar Nova Conta</h2>
+      <div id="cadastro-alert" class="alert hidden"></div>
+
+      <form id="form-cadastro">
+        <div class="form-group">
+          <label for="cad-nome">Nome Completo</label>
+          <input type="text" id="cad-nome" placeholder="Digite seu nome" required>
+        </div>
+        <div class="form-group">
+          <label for="cad-email">E-mail</label>
+          <input type="email" id="cad-email" placeholder="exemplo@email.com" required>
+        </div>
+        <div class="form-group">
+          <label for="cad-senha">Senha</label>
+          <input type="password" id="cad-senha" placeholder="Digite sua senha" required>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Cadastrar</button>
+      </form>
+
+      <div style="margin-top: 15px; text-align: center;">
+        <a href="#" id="link-go-login" style="color: #007bff; text-decoration: underline;">Voltar para o Login</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- TELA DASHBOARD -->
+  <div id="screen-dashboard" class="screen">
+    <div class="navbar">
+      <span>Bem-vindo, <strong id="user-name-display">Usuário</strong></span>
+      <button id="btn-logout" class="btn btn-danger">Sair</button>
+    </div>
+
+    <div class="container">
+      <h2>Painel de Controle</h2>
+      <div class="menu-grid">
+        <button id="nav-produtos" class="btn btn-menu">Gerenciar Produtos</button>
+        <button id="nav-producao" class="btn btn-menu">Controle de Produção (JIT)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TELA GERENCIAMENTO DE PRODUTOS -->
+  <div id="screen-produtos" class="screen">
+    <div class="container">
+      <button class="btn btn-secondary btn-to-dashboard">← Voltar ao Dashboard</button>
+      <h2>Gestão de Produtos MDF</h2>
+
+      <div id="produto-alert" class="alert hidden"></div>
+
+      <div class="card">
+        <h3 id="form-produto-title">Novo Produto</h3>
+        <form id="form-produto">
+          <input type="hidden" id="prod-id">
+          
+          <div class="form-group">
+            <label for="prod-nome">Nome do Produto</label>
+            <input type="text" id="prod-nome" required>
+          </div>
+          <div class="form-group">
+            <label for="prod-custo">Custo (R$)</label>
+            <input type="number" id="prod-custo" step="0.01" required>
+          </div>
+          <div class="form-group">
+            <label for="prod-qtd">Quantidade Atual</label>
+            <input type="number" id="prod-qtd" required>
+          </div>
+          <div class="form-group">
+            <label for="prod-min">Estoque Mínimo (Alerta JIT)</label>
+            <input type="number" id="prod-min" required>
+          </div>
+          <div class="form-group">
+            <label for="prod-desc">Descrição</label>
+            <textarea id="prod-desc" rows="2"></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Salvar Produto</button>
+          <button type="button" id="btn-cancelar-edicao" class="btn btn-secondary hidden">Cancelar</button>
+        </form>
+      </div>
+
+      <hr style="margin: 20px 0;">
+
+      <div class="form-group">
+        <input type="text" id="search-produto" placeholder="Buscar produto por nome...">
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Custo</th>
+            <th>Estoque</th>
+            <th>Estoque Mín.</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-produtos"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TELA DE PRODUÇÃO (JIT) -->
+  <div id="screen-producao" class="screen">
+    <div class="container">
+      <button class="btn btn-secondary btn-to-dashboard">← Voltar ao Dashboard</button>
+      <h2>Movimentação de Produção (Just In Time)</h2>
+
+      <div id="producao-alert" class="alert hidden"></div>
+
+      <div class="card">
+        <form id="form-producao">
+          <div class="form-group">
+            <label for="mov-produto">Produto</label>
+            <select id="mov-produto" required></select>
+          </div>
+          <div class="form-group">
+            <label for="mov-tipo">Tipo de Movimentação</label>
+            <select id="mov-tipo" required>
+              <option value="Fabricado">Fabricado (Entrada no Estoque)</option>
+              <option value="Pedido">Pedido (Saída do Estoque)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="mov-qtd">Quantidade</label>
+            <input type="number" id="mov-qtd" min="1" required>
+          </div>
+          <div class="form-group">
+            <label for="mov-data">Data</label>
+            <input type="date" id="mov-data" required>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Registrar Movimentação</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
